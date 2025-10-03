@@ -1,0 +1,24 @@
+#spring.application.name=dinchariya
+#  #spring.data.mongodb.host=localhost
+#  #spring.data.mongodb.port=27017
+#spring.data.mongodb.uri=mongodb+srv://anikpal_:mongo2020@cluster0.ppfaw.mongodb.net/emoexplain?retryWrites=true&w=majority
+#spring.data.mongodb.database=dinchariyadb
+#spring.data.mongodb.auto-index-creation=true
+
+spring:
+  application:
+    name: dinchariya
+
+  data:
+    mongodb:
+      uri: mongodb+srv://anikpal_:mongo2020@cluster0.ppfaw.mongodb.net
+      database: dinchariyadb
+      auto-index-creation: true
+
+  profiles:
+    active: dev
+
+
+
+# the project should be intialized with : " mvn clean package -D spring.profiles.active=dev "
+#Then it will be /target>: " java -jar .\dinchariya-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev"
