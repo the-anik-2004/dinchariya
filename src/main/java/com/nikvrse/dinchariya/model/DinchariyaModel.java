@@ -1,5 +1,6 @@
 package com.nikvrse.dinchariya.model;
 
+import com.nikvrse.dinchariya.enums.Sentiment;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,4 +22,5 @@ public class DinchariyaModel {
     private String title;
     private String content;
     private LocalDateTime date;
+    private Sentiment sentiment;
 }

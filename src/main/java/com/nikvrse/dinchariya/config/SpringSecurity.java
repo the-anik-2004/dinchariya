@@ -1,52 +1,50 @@
 package com.nikvrse.dinchariya.config;
 
+import com.nikvrse.dinchariya.filter.JwtFilter;
 import com.nikvrse.dinchariya.service.UserDetailsServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-public class SpringSecurity{
-    private final UserDetailsServiceImpl userDetailService;
+@EnableWebSecurity
+public class SpringSecurity {
 
-    public SpringSecurity(UserDetailsServiceImpl userDetailsService ){
-        this.userDetailService = userDetailsService;
+    @Autowired
+    private UserDetailsServiceImpl userDetailService;
+
+    @Autowired
+    private JwtFilter jwtFilter;
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
-    //Password Encoder bean
     @Bean
-    public PasswordEncoder passwordEncoder(){
-        return  new BCryptPasswordEncoder();
-    }
-
-
-
-    //Security filter chain
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf->csrf.disable())
-                .authorizeHttpRequests(
-                        auth->auth
-                                .requestMatchers("/dinchariyas/**","/users/**").authenticated()
-                                .requestMatchers("/admin/**").hasRole("ADMIN")
-                                .anyRequest().permitAll()
+                .csrf(csrf -> csrf.disable())
+                .userDetailsService(userDetailService)
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/dinchariyas/**", "/users/**").authenticated()
+                        .anyRequest().permitAll()
                 )
-                .httpBasic(Customizer.withDefaults())
-                .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
-
-
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {

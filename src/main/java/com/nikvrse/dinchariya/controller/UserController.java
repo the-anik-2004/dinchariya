@@ -53,8 +53,9 @@ public class UserController {
         String username= authentication.getName();
         WeatherResponse response=weatherService.getWeather(loc);
         String greetings="Hi "+username+",\n It's feels like "+response.getCurrent().getFeelslike()+"° C in "+response.getLocation().getName()+", "+response.getLocation().getCountry();
-        String quote="Quote of the day is :"+ quoteService.getQuote().getQuote();
-        return ResponseEntity.status(HttpStatus.OK).body(greetings+"\n "+quote);
+//        String quote="Quote of the day is :"+ quoteService.getQuote().getQuote();
+//        return ResponseEntity.status(HttpStatus.OK).body(greetings+"\n "+quote);
+        return ResponseEntity.status(HttpStatus.OK).body(greetings);
     }
 
     @GetMapping("/me")

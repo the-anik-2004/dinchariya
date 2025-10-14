@@ -1,29 +1,34 @@
-#spring.application.name=dinchariya
-#  #spring.data.mongodb.host=localhost
-#  #spring.data.mongodb.port=27017
-#spring.data.mongodb.uri=mongodb+srv://anikpal_:mongo2020@cluster0.ppfaw.mongodb.net/emoexplain?retryWrites=true&w=majority
-#spring.data.mongodb.database=dinchariyadb
-#spring.data.mongodb.auto-index-creation=true
-
 spring:
-  application:
-    name: dinchariya
-
+#  redis:
+#    host: localhost
+#    port: 6379
+  redis:
+    host: redis-15218.c305.ap-south-1-1.ec2.redns.redis-cloud.com
+    port: 15218
+    password: TOqtq3wNzOzfyB1s5flx9v3DleY3a0sr
   data:
     mongodb:
-      uri: mongodb+srv://anikpal_:mongo2020@cluster0.ppfaw.mongodb.net
+      uri: mongodb+srv://anikpal_:mongo2020@cluster0.ppfaw.mongodb.net/dinchariyadb?retryWrites=true&w=majority&appName=Cluster0
       database: dinchariyadb
       auto-index-creation: true
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: code.space.ap@gmail.com
+    password: jwvfimfwjkkoupxo   # <-- This should be an App Password, not normal Gmail password
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true   # <--- important to avoid 530 error
 
 server:
   port: 8080
 
 logging:
   level:
-#    root: ERROR
+    #    root: ERROR
     root: INFO
-
-
-
-# the project should be intialized with : " mvn clean package -D spring.profiles.active=dev "
-#Then it will be /target>: " java -jar .\dinchariya-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev"
